@@ -1,0 +1,2 @@
+Tienes que poner #.gif 600x600 partida en 9 piezas de 200x200
+# =1,2,3,4,5...8 la ficha faltante: /null/?.gif   >>? es un numero >1.gif
