@@ -1,20 +1,32 @@
 """
 Controller of puzzle by loko v 2.0
 """
-from itertools import tee
-from math import prod
-from os import path
+
+import os
 from random import sample
 
 class Controller:
     def __init__(self):
+        self.rutaDelProyecto = str(os.path.dirname(os.path.abspath(__file__))) # En donde estoy padado
         # Aqui se organizaran de manera aleatoria los numeros 1-9
         self.temp = []
         # Esto es lo que se quiere lograr
         self.estadoFinal = [1,2,3,4,5,6,7,8,9]
         # Aqui estan contenidos la casi matrix donde se pintan los numeros
-        self.tablero = [2,1,3,9,4,5,6,7,8]
-        self.generateRandonTable()
+        self.tablero = [1,2,3,4,5,6,7,9,8]
+        self.gameIsRun = True
+        # Guarda la cantidad de movimientos que ha hecho el usuario
+        self.cantidadMovimientos = 0
+        #self.generateRandonTable()
+
+    def saveScore(self, nombre, mensaje):
+        pass
+
+    def resetCantidadMovimientos(self):
+        self.cantidadMovimientos = 0
+
+    def isGameOver(self):
+        return self.tablero == self.estadoFinal
 
     def generateRandonTable(self):
         """
@@ -70,39 +82,40 @@ class Controller:
         [6][4][7] >> [6][4][7]
 
         """
-        donde = 0
-        for i in self.tablero:
-            if i == 9:
-                break
-            donde = donde + 1
-
-        # Declaro el candidato a intercambiar con el 9
-        candidato = None
-
-        # Para mover arriba solo hay que sumar 3
-        # Capturar la pieza de abajo e intercambiar
-        if mov == "00":
-            candidato = self.tablero[donde + 3]
-            self.tablero[donde + 3] = 9
-
-        # Para mover derecha solo hay que restar 1
-        if mov == "01":
-            candidato = self.tablero[donde - 1]
-            self.tablero[donde - 1] = 9
-
-        # Para mover abajo solo hay que restar 3
-        if mov == "10":
-            candidato = self.tablero[donde - 3]
-            self.tablero[donde - 3] = 9
-
-        # Para mover a la izq solo se suma 1
-        if mov == "11":
-            candidato = self.tablero[donde + 1]
-            self.tablero[donde + 1] = 9
         
-        # Intercambio el 9 con la pieza contraria
-        self.tablero[donde] = candidato
+        if not self.isGameOver():
+            donde = 0
+            for i in self.tablero:
+                if i == 9:
+                    break
+                donde = donde + 1
 
+            # Declaro el candidato a intercambiar con el 9
+            candidato = None
 
+            # Para mover arriba solo hay que sumar 3
+            # Capturar la pieza de abajo e intercambiar
+            if mov == "00":
+                candidato = self.tablero[donde + 3]
+                self.tablero[donde + 3] = 9
 
-          
+            # Para mover derecha solo hay que restar 1
+            if mov == "01":
+                candidato = self.tablero[donde - 1]
+                self.tablero[donde - 1] = 9
+
+            # Para mover abajo solo hay que restar 3
+            if mov == "10":
+                candidato = self.tablero[donde - 3]
+                self.tablero[donde - 3] = 9
+
+            # Para mover a la izq solo se suma 1
+            if mov == "11":
+                candidato = self.tablero[donde + 1]
+                self.tablero[donde + 1] = 9
+            
+            # Intercambio el 9 con la pieza contraria
+            self.tablero[donde] = candidato
+            self.cantidadMovimientos = self.cantidadMovimientos + 1
+        else:
+            self.gameIsRun = False
