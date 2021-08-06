@@ -2,12 +2,11 @@
 Controller of puzzle by loko v 2.0
 """
 
-import os
+
 from random import sample
 
 class Controller:
     def __init__(self):
-        self.rutaDelProyecto = str(os.path.dirname(os.path.abspath(__file__))) # En donde estoy padado
         # Aqui se organizaran de manera aleatoria los numeros 1-9
         self.temp = []
         # Esto es lo que se quiere lograr
