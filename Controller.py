@@ -4,9 +4,13 @@ Controller of puzzle by loko v 2.0
 
 
 from random import sample
+from FileController import *
+
 
 class Controller:
     def __init__(self):
+        # cargar/guardar archivos
+        self.fileController = FileController()
         # Aqui se organizaran de manera aleatoria los numeros 1-9
         self.temp = []
         # Esto es lo que se quiere lograr
@@ -19,13 +23,22 @@ class Controller:
         #self.generateRandonTable()
 
     def saveScore(self, nombre, mensaje):
-        pass
+        self.fileController.saveScore(self.cantidadMovimientos, nombre)
+        self.fileController.saveMessage(self.cantidadMovimientos, mensaje)
 
     def resetCantidadMovimientos(self):
         self.cantidadMovimientos = 0
 
     def isGameOver(self):
+        if self.tablero == self.estadoFinal:
+            self.gameIsRun = False
         return self.tablero == self.estadoFinal
+
+    def reStartgame(self):
+        self.resetCantidadMovimientos()
+        self.generateRandonTable()
+        self.gameIsRun = True
+
 
     def generateRandonTable(self):
         """
@@ -52,22 +65,23 @@ class Controller:
         """
         # search a 9 piece
         donde = 0
-        for i in self.tablero:
-            if i == 9:
-                break
-            donde = donde + 1
+        if self.gameIsRun:
+            for i in self.tablero:
+                if i == 9:
+                    break
+                donde = donde + 1
 
-        if mov == "00":
-            return donde < 6
+            if mov == "00":
+                return donde < 6
 
-        if mov == "01":
-            return donde != 0 and donde != 3 and donde != 6
+            if mov == "01":
+                return donde != 0 and donde != 3 and donde != 6
 
-        if mov == "10":
-            return donde > 2
+            if mov == "10":
+                return donde > 2
 
-        if mov == "11":
-            return donde != 2 and donde != 5 and donde != 8
+            if mov == "11":
+                return donde != 2 and donde != 5 and donde != 8
 
     def mouvePiece(self, mov):
         """
@@ -116,5 +130,3 @@ class Controller:
             # Intercambio el 9 con la pieza contraria
             self.tablero[donde] = candidato
             self.cantidadMovimientos = self.cantidadMovimientos + 1
-        else:
-            self.gameIsRun = False

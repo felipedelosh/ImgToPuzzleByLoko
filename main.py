@@ -1,10 +1,12 @@
 """
 Loko Puzzle v2.0
 
-Dada un img[].gif
+Dada un img[].gif organizar
 """
+
+from os import path
+from sys import platform
 from tkinter import *
-from typing import SupportsIndex
 from Controller import Controller
 
 class SOFTWARE:
@@ -25,8 +27,7 @@ class SOFTWARE:
         self.img7 = PhotoImage(file=self.imagesRutes[6]) 
         self.img8 = PhotoImage(file=self.imagesRutes[7])# pointer
         self.img9 = PhotoImage(file=self.nullImage)
-        self.allPhotoImages = [self.img1,self.img2,self.img3,self.img4,self.img5,self.img6,self.img7,self.img8,self.img9]  
-        # Images
+        self.allPhotoImages = [self.img1,self.img2,self.img3,self.img4,self.img5,self.img6,self.img7,self.img8,self.img9]
 
         self.isActiveWindowInsertScore = False
         
@@ -78,7 +79,7 @@ class SOFTWARE:
         
         count = 0
 
-        self.scream.after(60, self.repaint)    
+        self.scream.after(30, self.repaint)    
 
 
     def setAPPtitle(self, text):
@@ -103,32 +104,36 @@ class SOFTWARE:
         """
         When you press a keyboard...
         """
+    
+
         """Mov UP"""
-        if self.controller.gameIsRun:
-            if str(event.keysym) == "Up":
-                if self.controller.canMouve("00"):
-                    self.controller.mouvePiece("00")
-            """Mov DOWN"""
-            if str(event.keysym) == "Down":
-                if self.controller.canMouve("10"):
-                    self.controller.mouvePiece("10")
-            """Mov RI"""
-            if str(event.keysym) == "Right":
-                if self.controller.canMouve("01"):
-                    self.controller.mouvePiece("01")
-            """Mov LEFT"""
-            if str(event.keysym) == "Left":
-                if self.controller.canMouve("11"):
-                    self.controller.mouvePiece("11")
+        if str(event.keysym) == "Up":
+            if self.controller.canMouve("00"):
+                self.controller.mouvePiece("00")
+        """Mov DOWN"""
+        if str(event.keysym) == "Down":
+            if self.controller.canMouve("10"):
+                self.controller.mouvePiece("10")
+        """Mov RI"""
+        if str(event.keysym) == "Right":
+            if self.controller.canMouve("01"):
+                self.controller.mouvePiece("01")
+        """Mov LEFT"""
+        if str(event.keysym) == "Left":
+            if self.controller.canMouve("11"):
+                self.controller.mouvePiece("11")
 
-            
+        """Re-Arrange"""
+        if str(event.keysym) == "space" and not self.controller.gameIsRun:
+            self.controller.reStartgame()
 
+        """Re-Start"""
+        if str(event.keysym) == "r" and self.controller.gameIsRun:
+            self.controller.reStartgame()
 
+        self.refrestCountSteps()
 
-
-            self.refrestCountSteps()
-
-        if not self.isActiveWindowInsertScore:
+        if self.controller.isGameOver() and not self.isActiveWindowInsertScore:
             self.ventanaInsertScore()
             self.isActiveWindowInsertScore = True
 
@@ -159,7 +164,7 @@ class SOFTWARE:
         lblMensajeAnterior.place(x=20, y=190)
 
 
-        btnSave = Button(canvas, text="SAVE", bg="green", command= lambda : self.saveScore(txtNombre.get(), txtNombre.get(), t))
+        btnSave = Button(canvas, text="SAVE", bg="green", command= lambda : self.saveScore(txtNombre.get(), txtMensaje.get(), t))
         btnSave.place(x=180, y=250)
         canvas.place(x=0, y=0)
 
@@ -168,7 +173,9 @@ class SOFTWARE:
         When the game is over
         Saving a input data of player
         """
-        
+        if name.strip() != "" and message.strip():
+            self.controller.saveScore(name, message)
+
         t.destroy()
 
         
