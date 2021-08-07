@@ -63,9 +63,9 @@ class Controller:
         [9][9][9]
         [9][9][9]
         """
-        # search a 9 piece
-        donde = 0
         if self.gameIsRun:
+            # search a 9 piece
+            donde = 0
             for i in self.tablero:
                 if i == 9:
                     break

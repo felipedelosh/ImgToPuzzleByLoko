@@ -123,11 +123,11 @@ class SOFTWARE:
                 self.controller.mouvePiece("11")
 
         """Re-Arrange"""
-        if str(event.keysym) == "space" and not self.controller.gameIsRun:
+        if str(event.keysym) == "space" and not self.controller.gameIsRun and not self.isActiveWindowInsertScore:
             self.controller.reStartgame()
 
         """Re-Start"""
-        if str(event.keysym) == "r" and self.controller.gameIsRun:
+        if str(event.keysym) == "r" and self.controller.gameIsRun and not self.isActiveWindowInsertScore:
             self.controller.reStartgame()
 
         self.refrestCountSteps()
@@ -142,6 +142,7 @@ class SOFTWARE:
         t = Toplevel()
         t.geometry("400x300")
         t.title("Game Over")
+        t.protocol("WM_DELETE_WINDOW", lambda : self.closeTopLevelWindowScore(t))
 
         canvas = Canvas(t, height=300, width=400)
         lblCantidadPasos = Label(canvas, text="Felicitaciones has ganado!")
@@ -174,8 +175,13 @@ class SOFTWARE:
         """
         if name.strip() != "" and message.strip():
             self.controller.saveScore(name, message)
-
+            
+        self.isActiveWindowInsertScore = False
         t.destroy()
+
+    def closeTopLevelWindowScore(self, t):
+        t.destroy()
+        self.ventanaInsertScore()
 
         
     
