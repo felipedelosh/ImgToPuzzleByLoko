@@ -14,7 +14,7 @@ class SOFTWARE:
         self.scream = Tk()
         self.canvas = Canvas(self.scream, height=700, width=600, bg="snow")
         self.canvas.bind_all("<Key>",self.press_key)
-        self.lblMensaje = Label(self.canvas, text="cantidad de Pasos: ")
+        self.lblCantidadPasos = Label(self.canvas, text="cantidad de Pasos: ")
         self.imagesRutes = self.getBgImages() # get a ramdon image
         self.nullImage = self.getNullImage() # get a pointer in image
         self.controller = Controller()
@@ -60,7 +60,7 @@ class SOFTWARE:
         self.canvas.create_image(200, 500, image=self.img8, anchor="nw", tags="token7")
         self.canvas.create_image(400, 500, image=self.img9, anchor="nw", tags="token8")
 
-        self.lblMensaje.place(x=20, y=20)
+        self.lblCantidadPasos.place(x=20, y=20)
 
 
         self.scream.after(0, self.repaint)
@@ -86,7 +86,7 @@ class SOFTWARE:
         self.scream.title(text)
 
     def refrestCountSteps(self):
-        self.lblMensaje['text'] = "cantidad de Pasos: " + str(self.controller.cantidadMovimientos)
+        self.lblCantidadPasos['text'] = "cantidad de Pasos: " + str(self.controller.cantidadMovimientos)
 
     def getBgImages(self):
         return ["recursos/images/1/1.gif", "recursos/images/1/2.gif", "recursos/images/1/3.gif", "recursos/images/1/4.gif", "recursos/images/1/5.gif", "recursos/images/1/6.gif","recursos/images/1/7.gif","recursos/images/1/8.gif"]
@@ -104,7 +104,6 @@ class SOFTWARE:
         """
         When you press a keyboard...
         """
-    
 
         """Mov UP"""
         if str(event.keysym) == "Up":
@@ -145,14 +144,14 @@ class SOFTWARE:
         t.title("Game Over")
 
         canvas = Canvas(t, height=300, width=400)
-        lblMensaje = Label(canvas, text="Felicitaciones has ganado!")
-        lblMensaje.place(x=20, y=20)
+        lblCantidadPasos = Label(canvas, text="Felicitaciones has ganado!")
+        lblCantidadPasos.place(x=20, y=20)
         lblNombre = Label(canvas, text="Ingresa tu nombre: ")
         lblNombre.place(x=20, y=50)
         txtNombre = Entry(canvas, width=40)
         txtNombre.place(x=150, y=52)
-        lblMensaje = Label(canvas, text="Deja tu mensaje: ")
-        lblMensaje.place(x=20, y=80)
+        lblCantidadPasos = Label(canvas, text="Deja tu mensaje: ")
+        lblCantidadPasos.place(x=20, y=80)
         txtMensaje = Entry(canvas, width=40)
         txtMensaje.place(x=150, y=80)
         lblPuesto = Label(canvas, text="Puesto: ")
@@ -160,8 +159,8 @@ class SOFTWARE:
         canvas.create_line(0, 150, 400, 150)
         lblNombreAnterior = Label(canvas, text="Primer Jugador!!!")
         lblNombreAnterior.place(x=20, y=170)
-        lblMensajeAnterior = Label(canvas, text="El primero no siempre es el mejor!!!")
-        lblMensajeAnterior.place(x=20, y=190)
+        lblCantidadPasosAnterior = Label(canvas, text="El primero no siempre es el mejor!!!")
+        lblCantidadPasosAnterior.place(x=20, y=190)
 
 
         btnSave = Button(canvas, text="SAVE", bg="green", command= lambda : self.saveScore(txtNombre.get(), txtMensaje.get(), t))

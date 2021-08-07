@@ -20,7 +20,7 @@ class Controller:
         self.gameIsRun = True
         # Guarda la cantidad de movimientos que ha hecho el usuario
         self.cantidadMovimientos = 0
-        #self.generateRandonTable()
+        self.generateRandonTable()
 
     def saveScore(self, nombre, mensaje):
         self.fileController.saveScore(self.cantidadMovimientos, nombre)
