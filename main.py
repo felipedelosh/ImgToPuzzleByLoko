@@ -11,13 +11,13 @@ from Controller import Controller
 
 class SOFTWARE:
     def __init__(self):
+        self.controller = Controller()
         self.scream = Tk()
         self.canvas = Canvas(self.scream, height=700, width=600, bg="snow")
         self.canvas.bind_all("<Key>",self.press_key)
         self.lblCantidadPasos = Label(self.canvas, text="cantidad de Pasos: ")
         self.imagesRutes = self.getBgImages() # get a ramdon image
         self.nullImage = self.getNullImage() # get a pointer in image
-        self.controller = Controller()
         self.img1 = PhotoImage(file=self.imagesRutes[0]) 
         self.img2 = PhotoImage(file=self.imagesRutes[1]) 
         self.img3 = PhotoImage(file=self.imagesRutes[2]) 
@@ -72,14 +72,13 @@ class SOFTWARE:
         count = 0
 
         for i in self.controller.tablero:
-            
             k = self.canvas.find_withtag("token"+str(count))
             self.canvas.itemconfigure(k, image=self.allPhotoImages[i-1])
             count = count + 1
         
         count = 0
 
-        self.scream.after(30, self.repaint)    
+        self.scream.after(30, self.repaint)
 
 
     def setAPPtitle(self, text):
@@ -89,16 +88,11 @@ class SOFTWARE:
         self.lblCantidadPasos['text'] = "cantidad de Pasos: " + str(self.controller.cantidadMovimientos)
 
     def getBgImages(self):
-        return ["recursos/images/1/1.gif", "recursos/images/1/2.gif", "recursos/images/1/3.gif", "recursos/images/1/4.gif", "recursos/images/1/5.gif", "recursos/images/1/6.gif","recursos/images/1/7.gif","recursos/images/1/8.gif"]
+        return self.controller.getRandomIMG()
 
 
     def getNullImage(self):
-        return "recursos/images/null/1.gif"
-
-    def repaintImages(self):
-        for i in range(0, 9):
-            print(i)
-
+        return self.controller.getNullPointer()
 
     def press_key(self, event):
         """

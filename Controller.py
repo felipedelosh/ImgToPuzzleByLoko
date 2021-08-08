@@ -3,7 +3,7 @@ Controller of puzzle by loko v 2.0
 """
 
 
-from random import sample
+from random import randint, sample
 from FileController import *
 
 
@@ -21,6 +21,18 @@ class Controller:
         # Guarda la cantidad de movimientos que ha hecho el usuario
         self.cantidadMovimientos = 0
         self.generateRandonTable()
+
+    def getNullPointer(self):
+        """
+        Return a pointer of the puzzle
+        """
+        return self.fileController.loadRandomNullPointer()
+
+    def getRandomIMG(self):
+        """
+        Return a puzzle image
+        """
+        return self.fileController.loadRandomPuzzleImage()
 
     def saveScore(self, nombre, mensaje):
         self.fileController.saveScore(self.cantidadMovimientos, nombre)
