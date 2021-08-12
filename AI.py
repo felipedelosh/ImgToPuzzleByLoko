@@ -16,7 +16,6 @@ derecha izq dependiendo si puede moverse en la matriz que representa.
 
 """
 
-
 class Node(object):
     def __init__(self, data, childrens, euristic) -> None:
         """
@@ -62,12 +61,17 @@ class Three:
         """
         return self._searchForEuristicID(self.pivot, id)
 
+
     def _searchForEuristicID(self, node, id):
         if node.euristic == id:
             return node
         else:
             for i in node.childrens:
-                return self._searchForEuristicID(i, id)
+                result = self._searchForEuristicID(i, id)
+                if result is not None: 
+                    return result
+            return None
+
 
     def showThree(self):
         """
@@ -85,8 +89,6 @@ class PuzzleLokoResolver:
     def __init__(self) -> None:
         self.initialConfiguration = [] # Init a,b,c,d,e,f,h,i
         self.answer = [1,2,3,4,5,6,7,8,9] # The goal
-        self.euristicExistence = [] # When create a new node register it
-        self.controlEuristicExistence = [] # Save a visited posibilities
         self.three = Three()
 
     def resolve(self, matrix):
@@ -96,21 +98,24 @@ class PuzzleLokoResolver:
         """
         self.initialConfiguration = matrix
         self.three.addData(None, self.initialConfiguration)
-        self._searchAnswer(self.three, 0)
+        self._searchAnswer(0)
 
 
-    def _searchAnswer(self, three, searchEuristic):
-        nodeInfo = three.searchForEuristicID(searchEuristic)
-
-
+    def _searchAnswer(self, searchEuristic):
+        # Cacth Element
+        print("Buscando... ID:", searchEuristic)
+        nodeInfo = None
+        nodeInfo = self.three.searchForEuristicID(searchEuristic)
 
         if nodeInfo != None:
+            print("Puedo Buscar")
             if nodeInfo.data == self.answer:
-                print("Encontre la respuesta")
+                print("Encontre la respuesta...")
             else:
+                print("Seguir buscando...")
                 tempFatherNode = [] # Cacth father data
 
-                for i in three.searchForEuristicID(searchEuristic).data:
+                for i in nodeInfo.data:
                     tempFatherNode.append(i)
 
                 # Generate all posible childrens
@@ -138,7 +143,7 @@ class PuzzleLokoResolver:
 
                     #print(tempFatherNode, ">>" ,newChild)
                     # Save
-                    three.addData(tempFatherNode, newChild)
+                    self.three.addData(tempFatherNode, newChild)
 
                 # Can mouve to down
                 if ninePosition > 2:
@@ -154,7 +159,7 @@ class PuzzleLokoResolver:
                     newChild[ninePosition] = swapingNumber
                     #print(tempFatherNode, ">>" ,newChild)
                     # Save
-                    three.addData(tempFatherNode, newChild)
+                    self.three.addData(tempFatherNode, newChild)
 
                 # Can mouve to L
                 if ninePosition != 2 and ninePosition != 5 and ninePosition != 8:
@@ -169,7 +174,7 @@ class PuzzleLokoResolver:
                     newChild[ninePosition] = swapingNumber
                     #print(tempFatherNode, ">>" ,newChild)
                     # Save
-                    three.addData(tempFatherNode, newChild)
+                    self.three.addData(tempFatherNode, newChild)
 
                 # Can mouve to UP
                 if ninePosition < 6:
@@ -184,10 +189,12 @@ class PuzzleLokoResolver:
                     newChild[ninePosition] = swapingNumber
                     #print(tempFatherNode, ">>" ,newChild)
                     # Save
-                    three.addData(tempFatherNode, newChild)
+                    self.three.addData(tempFatherNode, newChild)
 
 
-            
+                self._searchAnswer(searchEuristic+1)
+        
+
 
 initial = [3,2,1,8,7,5,6,4,9]
 
@@ -195,16 +202,5 @@ temp = [3,8,6,7,9,5,2,4,1]
 
 oneShoot = [1,2,3,4,5,6,7,9,8]
 
-#r = PuzzleLokoResolver()
-#r.resolve(oneShoot)
-
-
-t = Three()
-t.addData(None, oneShoot)
-t.addData(oneShoot, [1,2,3,4,5,6,9,7,8])
-t.addData(oneShoot, [1,2,3,4,9,6,7,5,8])
-t.addData(oneShoot, [1,2,3,4,5,6,7,8,9])
-
-#t.showThree()
-
-print(t.searchForEuristicID(2))
+r = PuzzleLokoResolver()
+r.resolve(oneShoot)
